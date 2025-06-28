@@ -1,3 +1,41 @@
+label {
+  position:relative;
+  margin:5px;
+}
+
+input {
+  display: inline-block;
+  width: 200px;
+  height: 20px;
+}
+
+.search_icon {
+  position: absolute;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  left: 200px;
+  top: -5px;
+}
+
+.addPort {
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.addIcon {
+  position:absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.divider {
+  padding-top: 10px;
+}
+
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
