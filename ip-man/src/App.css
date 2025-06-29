@@ -18,6 +18,12 @@ input {
   top: -5px;
 }
 
+.toolsBar {
+  position: relative;
+  display: block;
+  padding-bottom: 10px;
+}
+
 .addPort {
   position: absolute;
   display: block;
@@ -33,8 +39,40 @@ input {
 }
 
 .divider {
-  padding-top: 10px;
+
 }
+
+.port-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.left {
+  position: relative;
+  float: left;
+  display: inline;
+  margin-right: 6rem;
+}
+
+.statusIconBlock {
+  position: relative;
+  display: inline;
+  float: right;
+}
+
+.statusIcon {
+  position:relative;
+}
+.right {
+  position: relative;
+  display: inline;
+}
+
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);

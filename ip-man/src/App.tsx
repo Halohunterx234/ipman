@@ -36,12 +36,32 @@ function App() {
         <div className="port-box">
           <div className="left">
             <text className="port-name">My First Port</text>
+            <br></br>
             <text className="port-ip">127.43.54.65::65565</text>
           </div>
           <div className="right">
             <text className="status">Status: OPEN</text>
-            <text className="date">Since 2 5 hours ago</text>
-
+            <br></br>
+            <text className="date">Since 2 hours ago</text>
+          </div>
+          <div className="statusIconBlock">
+            <img src="./open.png" className="statusIcon" alt="Opened" />
+          </div>
+        </div>
+          <Divider className="divider"></Divider>
+        <div className="port-box">
+          <div className="left">
+            <text className="port-name">My Second Port</text>
+            <br></br>
+            <text className="port-ip">127.43.54.65::65565</text>
+          </div>
+          <div className="right">
+            <text className="status">Status: CLOSED</text>
+            <br></br>
+            <text className="date">Since 2 hours ago</text>
+          </div>
+          <div className="statusIconBlock">
+            <img src="./closed.png" className="statusIcon" alt="Opened" />
           </div>
         </div>
       </div>
