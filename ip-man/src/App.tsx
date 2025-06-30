@@ -2,12 +2,44 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
+
+//Helper
+
+// Components
+import { Portbox } from "./components/portbox";
+import { AddIP, FormIP } from "./components/addIP";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
-  const [searchValue, setSearchValue] = useState("");
   const [name, setName] = useState("");
+
+  // Tools States
+  const [searchValue, setSearchValue] = useState("");
+
+  //IP Data States
+  type IPEntry = {
+    name: String;
+    ip: String;
+  };
+  const [ip_arr, setIPArr] = useState<IPEntry[]>([]);
+
+  //New IP State
+  const [addingIP, setAddingIP] = useState(false);
+  const [newIP, setNewIP] = useState<IPEntry>({
+    name: "",
+    ip: "",
+  });
+
+  //add new ip!
+  function addNewIP() {
+    setIPArr((previous) => [...previous, newIP]);
+    setNewIP({
+      name: "",
+      ip: "",
+    });
+    console.log(ip_arr);
+  }
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -48,7 +80,7 @@ function App() {
             <img src="./open.png" className="statusIcon" alt="Opened" />
           </div>
         </div>
-          <Divider className="divider"></Divider>
+        <Divider className="divider"></Divider>
         <div className="port-box">
           <div className="left">
             <text className="port-name">My Second Port</text>
@@ -61,18 +93,37 @@ function App() {
             <text className="date">Since 2 hours ago</text>
           </div>
           <div className="statusIconBlock">
-            <img src="./closed.png" className="statusIcon" alt="Opened" />
+            <img src="./closed.png" className="statusIcon" alt="Closed" />
           </div>
         </div>
+        <Divider className="divider"></Divider>
+        <Portbox
+          name={"My third port"}
+          ip={"123.23.43.53::12223"}
+          status={"LOADING"}
+          date={"???"}></Portbox>
+        {/* map current array to portboxes */}
+        {ip_arr.map((ip_entry, idx) => (
+          <Portbox
+            name={ip_entry.name}
+            ip={ip_entry.ip}
+            status={"LOADING"}
+            date={"???"}></Portbox>
+        ))}
       </div>
 
       <Divider className="divider"></Divider>
 
-      <div className="newPort">
-        <button className="addPort">
-          <img className="addIcon" title="addIcon" src="./plus.svg"></img>
-        </button>
-      </div>
+      <AddIP
+        state={addingIP}
+        setState={setAddingIP}
+        onAdd={() => {
+          setAddingIP(!addingIP);
+        }}
+        toSubmit={addNewIP}
+        currentNewIP={newIP}
+        setNewIP={setNewIP}></AddIP>
+
       {/* <h1>Welcome to Tauri + React</h1>
 
       <div className="row">

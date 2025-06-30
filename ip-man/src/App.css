@@ -1,6 +1,6 @@
 label {
-  position:relative;
-  margin:5px;
+  position: relative;
+  margin: 5px;
 }
 
 input {
@@ -33,13 +33,9 @@ input {
 }
 
 .addIcon {
-  position:absolute;
+  position: absolute;
   top: 12px;
   left: 12px;
-}
-
-.divider {
-
 }
 
 .port-box {
@@ -51,28 +47,6 @@ input {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-
-.left {
-  position: relative;
-  float: left;
-  display: inline;
-  margin-right: 6rem;
-}
-
-.statusIconBlock {
-  position: relative;
-  display: inline;
-  float: right;
-}
-
-.statusIcon {
-  position:relative;
-}
-.right {
-  position: relative;
-  display: inline;
-}
-
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);

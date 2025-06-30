@@ -1,0 +1,20 @@
+.left {
+  position: relative;
+  float: left;
+  display: inline;
+  margin-right: 6rem;
+}
+
+.statusIconBlock {
+  position: relative;
+  display: inline;
+  float: right;
+}
+
+.statusIcon {
+  position: relative;
+}
+.right {
+  position: relative;
+  display: inline;
+}
