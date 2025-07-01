@@ -1,30 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/addIPBox.css";
+import { IPEntry } from "../App";
 
-function AddIP(props: {
-  state: boolean;
-  setState: Function;
-  onAdd: Function;
-  toSubmit: Function;
-  currentNewIP: { name: String; ip: String };
-  setNewIP: Function;
-}) {
-  if (props.state) {
+function AddIP(props: { onAddPort: Function }) {
+  const [addingIP, setAddingIP] = useState(false);
+
+  const [addIP, setAddIP] = useState<IPEntry>({
+    name: "",
+    ip: "",
+    date: "",
+    state: "",
+    id: 0,
+  });
+  if (addingIP) {
     return (
       <div className="addIP">
         <FormIP
-          currentNewIP={props.currentNewIP}
-          setNewIP={props.setNewIP}
+          currentNewIP={addIP}
+          setNewIP={setAddIP}
           todo={() => {
-            props.toSubmit();
-            props.setState(!props.state);
+            props.onAddPort(addIP);
+            setAddingIP(!addingIP);
           }}
           toCancel={() => {
-            props.setState(!props.state);
-            props.setNewIP({
-              name: "",
-              ip: "",
-            });
+            setAddingIP(!addingIP);
           }}
         />
       </div>
@@ -35,7 +34,7 @@ function AddIP(props: {
         <button
           className="addPort"
           onClick={() => {
-            props.onAdd();
+            setAddingIP(true);
           }}>
           <img className="addIcon" title="addIcon" src="./plus.svg"></img>
         </button>
@@ -46,7 +45,7 @@ function AddIP(props: {
 
 // Emptied Form version of a portbox
 function FormIP(props: {
-  currentNewIP: { name: String; ip: String };
+  currentNewIP: IPEntry;
   setNewIP: Function;
   todo: Function;
   toCancel: Function;

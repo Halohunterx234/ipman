@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
-import Divider from "@mui/material/Divider";
 
 //Helper
 
+//Pre-built Components
+import Divider from "@mui/material/Divider";
+
 // Components
 import { Portbox } from "./components/portbox";
+import IPList from "./components/IPList";
 import { AddIP, FormIP } from "./components/addIP";
+
+type IPEntry = {
+  name: "";
+  ip: "";
+  date: "";
+  state: "";
+  id: number;
+};
+
+export type { IPEntry };
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -18,43 +31,34 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
 
   //IP Data States
-  type IPEntry = {
-    name: String;
-    ip: String;
-  };
   const [ip_arr, setIPArr] = useState<IPEntry[]>([]);
 
   //New IP State
   const [addingIP, setAddingIP] = useState(false);
-  const [newIP, setNewIP] = useState<IPEntry>({
-    name: "",
-    ip: "",
-  });
 
-  //add new ip!
-  function addNewIP() {
-    setIPArr((previous) => [...previous, newIP]);
-    setNewIP({
-      name: "",
-      ip: "",
+  // IP Port Reducer Logic
+  const [ports, dispatch] = useReducer(portsReducer, initialPorts);
+
+  function handleAddPort(data: { name: String; ip: String }) {
+    dispatch({
+      type: "added",
+      id: nextId++,
+      data: data,
     });
-    console.log(ip_arr);
   }
 
-  //editing ips
-  //reducer handlers
-  // function handleEditIP(newIP) {
-  //   dispatch({
-  //     type: "editIP",
-  //     edit: newIP,
-  //   })
-  // }
-  // function handleDeleteIP(id) {
-  //   dispatch({
-  //     type: "deleteIP",
-  //     id: id,
-  //   })
-  // }
+  function handleChangePort(data: { name: String; ip: String }) {
+    dispatch({
+      type: "changed",
+      data: data,
+    });
+  }
+  function handleDeletePort(id: Number) {
+    dispatch({
+      type: "deleted",
+      id: id,
+    });
+  }
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -114,64 +118,56 @@ function App() {
         <Divider className="divider"></Divider>
         {/* map current array to portboxes */}
         {/* {ip_arr.filter(i => i.name.includes(searchValue)).map((i) => <Portbox name={i.name} ip={i.ip} status={"LOADING"} date={"???"} />)} */}
-        {ip_arr.filter(ip_entry => ip_entry.name.includes(searchValue)).map((ip_entry, idx) => {
-          return (
-            <div className="Portbox">
-              <Portbox
-                name={ip_entry.name}
-                ip={ip_entry.ip}
-                status={"LOADING"}
-                date={"???"}></Portbox>
-                <Divider className="divider"></Divider>
-            </div>
-          )
-        }
-        )}
+        <IPList
+          ports={ports}
+          onChangePort={handleChangePort}
+          onDeletePort={handleDeletePort}
+          filterValue={searchValue}></IPList>
       </div>
 
-
-
-      <AddIP
-        state={addingIP}
-        setState={setAddingIP}
-        onAdd={() => {
-          setAddingIP(!addingIP);
-        }}
-        toSubmit={addNewIP}
-        currentNewIP={newIP}
-        setNewIP={setNewIP}></AddIP>
-
-      {/* <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}>
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p> */}
+      <AddIP onAddPort={handleAddPort}></AddIP>
     </main>
   );
 }
+
+// Port Reducer
+function portsReducer(ports: any, action: any) {
+  switch (action.type) {
+    case 'added': {
+      const len = ports.length;
+      const newIP: IPEntry = {
+        ...action.data,
+        date: "???",
+        state: "LOADING",
+        id: len
+      }
+      return [...ports, newIP];
+    }
+    case 'changed': {
+      return ports.map((p: IPEntry) => {
+        if (p.id === action.id) {
+          return {
+            ...p,
+            name: action.data.name,
+            ip: action.data.ip
+          };
+        } else {
+          return p;
+        }
+      })
+    }
+    case 'deleted': {
+      return ports.filter((p: IPEntry) => p.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action' + action.type);
+    }
+  }
+}
+
+let nextId = 1;
+const initialPorts = [
+  { id: 0, name: "My fourth port", ip: "1234", date: "???", state: "LOADING"}
+];
 
 export default App;

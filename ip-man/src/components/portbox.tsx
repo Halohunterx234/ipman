@@ -1,29 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
+import { IPEntry } from "../App";
+
 import "../styles/portbox.css";
 
 function Portbox(props: {
-  name: String;
-  ip: String;
-  status: String;
-  date: String;
+  ip: IPEntry;
+  onChange: Function;
+  onDelete: Function;
 }) {
-  return (
-    <div className="port-box">
-      <div className="left">
-        <text className="port-name">{props.name}</text>
-        <br></br>
-        <text className="port-ip">{props.ip}</text>
+  const [isEditing, setIsEditing] = useState(false);
+  let portContent;
+
+  console.log(props)
+  if (isEditing) {
+    portContent = (
+      <div className="port-box-edited">
+        <div className="left">
+          <input
+            title="port-name-edited"
+            className="port-name"
+            value={props.ip.name}
+            onChange={(e) => {
+              props.onChange({
+                ...props.ip,
+                name: e.target.value,
+              });
+            }}></input>
+          <br></br>
+          <input
+            title="port-ip-edited"
+            className="port-ip"
+            value={props.ip.ip}
+            onChange={(e) => {
+              props.onChange({
+                ...props.ip,
+                ip: e.target.value,
+              });
+            }}></input>
+        </div>
+        <div className="right">
+          <text className="status">Status: {props.ip.state}</text>
+          <br></br>
+          <text className="date">{props.ip.date}</text>
+        </div>
+        <div className="statusIconBlock">
+          // <img src="./loading.png" className="statusIcon" alt="Loading" />
+          //{" "}
+        </div>
+        <button onClick={() => setIsEditing(false)}>Save</button>
       </div>
-      <div className="right">
-        <text className="status">Status: {props.status}</text>
-        <br></br>
-        <text className="date">{props.date}</text>
+    );
+  } else {
+    portContent = (
+      <div className="port-box">
+        <div className="left">
+          <text className="port-name">{props.ip.name}</text>
+          <br></br>
+          <text className="port-ip">{props.ip.ip}</text>
+        </div>
+        <div className="right">
+          <text className="status">Status: {props.ip.state}</text>
+          <br></br>
+          <text className="date">{props.ip.date}</text>
+        </div>
+        <div className="statusIconBlock">
+          <img src="./loading.png" className="statusIcon" alt="Loading" />
+        </div>
+        <button onClick={() => setIsEditing(true)}>Edit</button>
+        <button onClick={() => props.onDelete(props.ip.id)}>Delete</button>
       </div>
-      <div className="statusIconBlock">
-        <img src="./loading.png" className="statusIcon" alt="Loading" />
-      </div>
-    </div>
-  );
+    );
+  }
+
+  return portContent;
 }
 
 export { Portbox };
