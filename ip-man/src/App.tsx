@@ -41,6 +41,21 @@ function App() {
     console.log(ip_arr);
   }
 
+  //editing ips
+  //reducer handlers
+  // function handleEditIP(newIP) {
+  //   dispatch({
+  //     type: "editIP",
+  //     edit: newIP,
+  //   })
+  // }
+  // function handleDeleteIP(id) {
+  //   dispatch({
+  //     type: "deleteIP",
+  //     id: id,
+  //   })
+  // }
+
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
@@ -97,22 +112,24 @@ function App() {
           </div>
         </div>
         <Divider className="divider"></Divider>
-        <Portbox
-          name={"My third port"}
-          ip={"123.23.43.53::12223"}
-          status={"LOADING"}
-          date={"???"}></Portbox>
         {/* map current array to portboxes */}
-        {ip_arr.map((ip_entry, idx) => (
-          <Portbox
-            name={ip_entry.name}
-            ip={ip_entry.ip}
-            status={"LOADING"}
-            date={"???"}></Portbox>
-        ))}
+        {/* {ip_arr.filter(i => i.name.includes(searchValue)).map((i) => <Portbox name={i.name} ip={i.ip} status={"LOADING"} date={"???"} />)} */}
+        {ip_arr.filter(ip_entry => ip_entry.name.includes(searchValue)).map((ip_entry, idx) => {
+          return (
+            <div className="Portbox">
+              <Portbox
+                name={ip_entry.name}
+                ip={ip_entry.ip}
+                status={"LOADING"}
+                date={"???"}></Portbox>
+                <Divider className="divider"></Divider>
+            </div>
+          )
+        }
+        )}
       </div>
 
-      <Divider className="divider"></Divider>
+
 
       <AddIP
         state={addingIP}
