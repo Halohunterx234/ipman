@@ -11,7 +11,9 @@ function Portbox(props: {
   const [isEditing, setIsEditing] = useState(false);
   let portContent;
 
-  console.log(props)
+  const [editedIP, setEditedIP] = useState<IPEntry>(props.ip);
+
+  console.log(props);
   if (isEditing) {
     portContent = (
       <div className="port-box-edited">
@@ -21,22 +23,30 @@ function Portbox(props: {
             className="port-name"
             placeholder={props.ip.name}
             onChange={(e) => {
-              props.onChange({
-                ...props.ip,
-                name: e.target.value,
+              const new_name = e.currentTarget.value;
+              setEditedIP((previous) => {
+                return {
+                  ...previous,
+                  name: new_name,
+                };
               });
-            }}></input>
+            }}
+          />
           <br></br>
           <input
             title="port-ip-edited"
             className="port-ip"
             placeholder={props.ip.ip}
             onChange={(e) => {
-              props.onChange({
-                ...props.ip,
-                ip: e.target.value,
+              const new_ip = e.currentTarget.value;
+              setEditedIP((previous) => {
+                return {
+                  ...previous,
+                  ip: new_ip,
+                };
               });
-            }}></input>
+            }}
+          />
         </div>
         <div className="right">
           <text className="status">Status: {props.ip.state}</text>
@@ -44,16 +54,32 @@ function Portbox(props: {
           <text className="date">{props.ip.date}</text>
         </div>
         <div className="statusIconBlock">
-          // <img src="./loading.png" className="statusIcon" alt="Loading" />
-          //{" "}
+          <img src="./loading.png" className="statusIcon" alt="Loading" />
         </div>
-        <button onClick={() => {
-          setIsEditing(false);
-          props.onChange({
-            ...props.ip
-          })
-        }
-        }>Save</button>
+        <button
+          className="saveButton"
+          onClick={() => {
+            setIsEditing(false);
+            console.log("sending ->", {
+              ...props.ip,
+              name: editedIP.name,
+              ip: editedIP.ip,
+            });
+            props.onChange({
+              ...props.ip,
+              name: editedIP.name,
+              ip: editedIP.ip,
+            });
+          }}>
+          Save
+        </button>
+        <button
+          className="cancelButton"
+          onClick={() => {
+            setIsEditing(false);
+          }}>
+          Cancel
+        </button>
       </div>
     );
   } else {

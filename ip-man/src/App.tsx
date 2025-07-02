@@ -14,10 +14,10 @@ import IPList from "./components/IPList";
 import { AddIP, FormIP } from "./components/addIP";
 
 type IPEntry = {
-  name: "";
-  ip: "";
-  date: "";
-  state: "";
+  name: string;
+  ip: string;
+  date: string;
+  state: string;
   id: number;
 };
 
@@ -39,7 +39,7 @@ function App() {
   // IP Port Reducer Logic
   const [ports, dispatch] = useReducer(portsReducer, initialPorts);
 
-  function handleAddPort(data: { name: String; ip: String }) {
+  function handleAddPort(data: IPEntry) {
     nextId++;
     dispatch({
       type: "added",
@@ -48,7 +48,8 @@ function App() {
     });
   }
 
-  function handleChangePort(data: { name: String; ip: String }) {
+  function handleChangePort(data: IPEntry) {
+    console.log("handling changed port, ", data);
     dispatch({
       type: "changed",
       data: data,
@@ -134,41 +135,45 @@ function App() {
 // Port Reducer
 function portsReducer(ports: any, action: any) {
   switch (action.type) {
-    case 'added': {
+    case "added": {
       const newIP: IPEntry = {
         ...action.data,
         date: "???",
         state: "LOADING",
-        id: action.id
-      }
+        id: action.id,
+      };
       return [...ports, newIP];
     }
-    case 'changed': {
+    case "changed": {
       return ports.map((p: IPEntry) => {
-        if (p.id === action.id) {
-          console.log("Changing port", p, action.data);
+        if (p.id === action.data.id) {
+          console.log("here", {
+            ...p,
+            name: action.data.name,
+            ip: action.data.ip,
+          });
           return {
             ...p,
             name: action.data.name,
-            ip: action.data.ip
+            ip: action.data.ip,
           };
         } else {
           return p;
         }
-      })
+      });
     }
-    case 'deleted': {
+    case "deleted": {
       return ports.filter((p: IPEntry) => p.id !== action.id);
     }
     default: {
-      throw Error('Unknown action' + action.type);
+      throw Error("Unknown action" + action.type);
     }
   }
 }
 
 let nextId = 1;
 const initialPorts = [
-  { id: 0, name: "My fourth port", ip: "1234", date: "???", state: "LOADING"}
+  { id: 0, name: "My fourth port", ip: "1234", date: "???", state: "LOADING" },
 ];
 
 export default App;

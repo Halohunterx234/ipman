@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Portbox } from "./portbox";
 import { Divider } from "@mui/material";
+import { IPEntry } from "../App";
 
 export default function IPList(props: {
-  ports: any;
+  ports: IPEntry[];
   filterValue: String;
-  onChangePort: any;
-  onDeletePort: any;
+  onChangePort: Function;
+  onDeletePort: Function;
 }) {
-
-  console.log(props.ports, props.filterValue);
   return props.ports
     .filter((port: any) => port.name.includes(props.filterValue))
     .map((port: any, idx: Number) => {

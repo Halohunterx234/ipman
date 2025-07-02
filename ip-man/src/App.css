@@ -38,7 +38,7 @@ input {
   left: 12px;
 }
 
-.port-box {
+.port-box  {
   position: relative;
   display: flex;
   align-items: center;
@@ -47,6 +47,18 @@ input {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+.port-box-edited  {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
