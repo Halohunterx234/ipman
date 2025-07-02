@@ -19,7 +19,7 @@ function Portbox(props: {
           <input
             title="port-name-edited"
             className="port-name"
-            value={props.ip.name}
+            placeholder={props.ip.name}
             onChange={(e) => {
               props.onChange({
                 ...props.ip,
@@ -30,7 +30,7 @@ function Portbox(props: {
           <input
             title="port-ip-edited"
             className="port-ip"
-            value={props.ip.ip}
+            placeholder={props.ip.ip}
             onChange={(e) => {
               props.onChange({
                 ...props.ip,
@@ -47,7 +47,13 @@ function Portbox(props: {
           // <img src="./loading.png" className="statusIcon" alt="Loading" />
           //{" "}
         </div>
-        <button onClick={() => setIsEditing(false)}>Save</button>
+        <button onClick={() => {
+          setIsEditing(false);
+          props.onChange({
+            ...props.ip
+          })
+        }
+        }>Save</button>
       </div>
     );
   } else {

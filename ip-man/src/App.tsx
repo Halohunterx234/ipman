@@ -40,9 +40,10 @@ function App() {
   const [ports, dispatch] = useReducer(portsReducer, initialPorts);
 
   function handleAddPort(data: { name: String; ip: String }) {
+    nextId++;
     dispatch({
       type: "added",
-      id: nextId++,
+      id: nextId,
       data: data,
     });
   }
@@ -134,18 +135,18 @@ function App() {
 function portsReducer(ports: any, action: any) {
   switch (action.type) {
     case 'added': {
-      const len = ports.length;
       const newIP: IPEntry = {
         ...action.data,
         date: "???",
         state: "LOADING",
-        id: len
+        id: action.id
       }
       return [...ports, newIP];
     }
     case 'changed': {
       return ports.map((p: IPEntry) => {
         if (p.id === action.id) {
+          console.log("Changing port", p, action.data);
           return {
             ...p,
             name: action.data.name,
