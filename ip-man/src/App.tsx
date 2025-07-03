@@ -7,7 +7,7 @@ import "./App.css";
 
 //Pre-built Components
 import Divider from "@mui/material/Divider";
-
+import FilterMenu, { FilterOptions } from "./components/filter";
 // Components
 import { Portbox } from "./components/portbox";
 import IPList from "./components/IPList";
@@ -36,8 +36,65 @@ function App() {
   //New IP State
   const [addingIP, setAddingIP] = useState(false);
 
+  //Filter 
+  const [filterState, setFilterState] = useState<FilterOptions>(FilterOptions.FirstCreated);
+
+  function handleFilterChange(newFilter: FilterOptions) {
+    //if same state, do nothing
+    if (newFilter === filterState) {
+      console.log("Filter state is already set to: ", newFilter);
+      return;
+    }
+    setFilterState(newFilter);
+    switch (newFilter) {
+      case FilterOptions.FirstCreated: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return a.id - b.id;
+        })
+        break;
+      }
+      case FilterOptions.LastCreated: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return b.id - a.id;
+        })
+        break;
+      }
+      case FilterOptions.NameAsc: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return a.name.localeCompare(b.name);
+        }); 
+        break;
+      }
+      case FilterOptions.NameDesc: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return b.name.localeCompare(a.name);
+        });
+        break;
+      }
+      case FilterOptions.IpAsc: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return a.ip.localeCompare(b.ip);
+        });
+        break;
+      }
+      case FilterOptions.IpDesc: {
+        ports.sort((a: IPEntry, b: IPEntry) => {
+          return b.ip.localeCompare(a.ip);
+        });
+        break;
+      }
+      default: {
+        console.log("Unknown filter option: ", newFilter);
+        break;
+      }
+    }
+  }
+
   // IP Port Reducer Logic
   const [ports, dispatch] = useReducer(portsReducer, initialPorts);
+
+
+
 
   function handleAddPort(data: IPEntry) {
     nextId++;
@@ -70,7 +127,8 @@ function App() {
   return (
     <main className="container">
       <div className="toolsBar">
-        <label>
+        <FilterMenu handleChange={handleFilterChange}></FilterMenu>
+        <label  className="searchBar">
           <input
             name="searchBar"
             type="string"

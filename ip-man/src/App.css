@@ -15,13 +15,18 @@ input {
   width: 30px;
   height: 30px;
   left: 200px;
-  top: -5px;
+  top: 5px;
 }
 
-.toolsBar {
+.searchBar {
   position: relative;
-  display: block;
-  padding-bottom: 10px;
+  display: flex;
+  width: 250px;
+  height: 30px;
+  margin-left: 10px;
+  align-self: center;
+  justify-self: center;
+  border-radius: 10px;
 }
 
 .addPort {
@@ -58,7 +63,14 @@ input {
   padding-bottom: 1rem;
 }
 
-
+div .toolsBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-right: 10rem;
+}
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);

@@ -1,0 +1,12 @@
+div .filter-menu {
+    position: relative;
+    display: inline-block;
+}
+
+Menu .filter-menu {
+    position: relative;
+}
+
+.lock-button {
+    position: relative;
+}
