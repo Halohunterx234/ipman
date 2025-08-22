@@ -12,3 +12,21 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+#[tauri::command]
+// Invoked from the front-end OR auto runs every few seconds
+// auto-running will be handled by the front-end
+// https://tauri.app/develop/calling-rust
+fn check_ports() -> Result<> {
+
+}
+
+// Invoked from the front-end
+// At the end, send via tauri's channels back to the front-end
+//https://tauri.app/develop/calling-frontend
+fn modify_port() -> Result<> {
+
+}
+
+
+
